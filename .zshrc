@@ -52,11 +52,12 @@
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-  plugins=(git
+ plugins=(
+     git
 	   z
 	   zsh-syntax-highlighting)
 
-  source $ZSH/oh-my-zsh.sh
+ source $ZSH/oh-my-zsh.sh
 
 # User configuration 
 
@@ -125,17 +126,39 @@
   fi
   
 # some path stuff
-  export PATH="/usr/local/sbin:$PATH"
+  export PATH="/usr/local/sbin:~/bin:$PATH"
 
   # for Telus EMR
-  export PYTHONPATH="~/workspace/telushealth-emr/ui-automation/ui/lib/":"~/workspace/telushealth-emr/ui-automation/":$PYTHONPATH
+  export PYTHONPATH="~/workspace/telushealth-emr/ui-automation/ui/lib/":"~/workspace/telushealth-emr/ui-automation/":"~/workspace/telushealth-emr/qa-test-automation-framework/qata/":"~/workspace/telushealth-emr/telus-hthidc-secondRepo":"~/workspace/telushealth-emr/telus-hthidc-secondRepo/ui/lib/":$PYTHONPATH
+
+  # Android SDK and Platform Tools
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home"
+  export ANDROID_HOME="/Users/zaknitsch/Library/Android/sdk"
+  export PATH=${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:$JAVA_HOME/bin:$PATH
   
 # custom FNs
 
-  uuidgen='uuidgen | tr "[:upper:]" "[:lower:]"'
+  uuid='uuidgen | tr "[:upper:]" "[:lower:]"'
   
-  function push-patch() {
+  function patch() {
       git push origin HEAD:refs/for/master/$1
+  }
+
+  function patch-to() {
+      git push origin HEAD:refs/for/$1/$2
+  }
+
+  function runbot() {
+      robot --variable EMR\ TYPE:$1 \
+            --variable PROXY\ URL:  --variable SERVICES\ VERSION:$2 -t $3 ui
+  }
+
+  function sshwma() {
+      ssh -nNT -L 9999:10.27.122.193:3389 MacUser@172.25.150.2
+  }
+
+  function sshpsskin() {
+      ssh -nNT -L 9999:10.27.122.35:3389 MacUser@172.25.150.2
   }
 
   function hiveall(){
