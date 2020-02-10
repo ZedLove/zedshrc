@@ -2,6 +2,10 @@
   export PATH=$HOME/bin:/usr/local/bin:$PATH
   export PATH=/usr/local/share/npm/bin:$PATH
 
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 # Path to your oh-my-zsh installation.
   export ZSH=/Users/zaknitsch/.oh-my-zsh
 
@@ -30,10 +34,10 @@
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
- ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
- COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -52,14 +56,11 @@
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
- plugins=(
-     git
-	   z
-	   zsh-syntax-highlighting)
+  plugins=(git)
 
- source $ZSH/oh-my-zsh.sh
+  source $ZSH/oh-my-zsh.sh
 
-# User configuration 
+# User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -76,9 +77,8 @@
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-# Unset sharing command history between tabs
-  unsetopt inc_append_history
-  unsetopt share_history
+# git
+  alias gst="git status"
   
 # ssh
   export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -90,121 +90,71 @@
 #
 # aliases
   alias zshconfig="emacs ~/.zshrc"
-  alias ohmyzsh="emacs ~/.oh-my-zsh"
+  alias lla="ls -la"
+
 
 # Homebrew Token
-  export HOMEBREW_GITHUB_API_TOKEN=67a51c803c77e1e5d33958ca972f2330ab801fdc
+  export HOMEBREW_GITHUB_API_TOKEN=7a41ae4d5168879f5504a133dad9ae62db9e5989
   
 # GEOMETRY THEME COLOURS
-# there are some reserved names, or you can use 0-padded 3-digit numbers from 000-255  
-  GEOMETRY_COLOR_EXIT_VALUE="magenta"     # prompt symbol color when exit value is != 0
-  GEOMETRY_COLOR_PROMPT="white"           # prompt symbol color
-  GEOMETRY_COLOR_ROOT="red"               # root prompt symbol color
-  GEOMETRY_COLOR_DIR=067                  # current directory color
+  GEOMETRY_COLOR_EXIT_VALUE="magenta"         # prompt symbol color when exit value is != 0
+  GEOMETRY_COLOR_PROMPT="white"               # prompt symbol color
+  GEOMETRY_COLOR_ROOT="red"                   # root prompt symbol color
+  GEOMETRY_COLOR_DIR="blue"                   # current directory color
 
 # GEOMETRY THEME SETTINGS
   PROMPT_GEOMETRY_EXEC_TIME="true"
   
+# Hide Java icon from dock (seems ineffective)
+  export JAVA_TOOL_OPTIONS="-Dapple.awt.UIElement=true"  
+  
 # AWS CREDS
-  export AWS_ACCESS_KEY_ID=""
-  export AWS_SECRET_ACCESS_KEY=""
-  export EC2_REGION=""
+  export EC2_REGION="eu-west-1"
   export AWS_CONFIG_FILE=~/.aws/credentials
 
-# AVS
-  export MDC_SKILL_ID="amzn1.ask.skill.91552bad-9bf5-41f8-bb82-1b956b605bf4"
-  export MDC_FLASHBRIEFING_SKILL_ID=""
+# mkdir and cd fn
+  mkcdir() {
+      mkdir -p -- "$1" &&
+          cd -P -- "$1"
+  }
+  
+# custom find/replace for specific file/placeholders
+  cvl() {
+      from_file="zn_coverletter_2020.txt"
+      company_underscored=${${2}// /_}
+      to_file="zn_coverletter_${company_underscored}.txt"
 
-# NVM
-  if [[ -z "${NVM_DIR}" ]]; then
-      echo "source nvm"
-      export NVM_DIR=~/.nvm
-      source $(brew --prefix nvm)/nvm.sh
-  else
-      message="nvm already initialized as "$NVM_DIR
-      echo $message
-  fi
+      # check if previous file exists
+      if [ -e $to_file ];
+      then to_file="zn_coverletter_${2}_2.txt";
+      fi
+      
+      # specific addressee?
+      if [ -z "$3" ];
+      then
+          addressee="To Whom It May Concern"
+      else
+          addressee="Dear ${3}"
+      fi
+      # replace placeholders with fn params
+      sed -e "s/\${ROLE}/$1/" -e "s/\${COMPANY}/$2/" -e "s/\${ADDRESSEE}/$addressee/" $from_file > $to_file
+      # display file contents for easy copy/paste
+      cat $to_file
+  }
   
 # some path stuff
-  export PATH="/usr/local/sbin:~/bin:$PATH"
+  export PATH="/usr/local/sbin:$PATH"
+  export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
 
-  # for Telus EMR
-  export PYTHONPATH="~/workspace/telushealth-emr/ui-automation/ui/lib/":"~/workspace/telushealth-emr/ui-automation/":"~/workspace/telushealth-emr/qa-test-automation-framework/qata/":"~/workspace/telushealth-emr/telus-hthidc-secondRepo":"~/workspace/telushealth-emr/telus-hthidc-secondRepo/ui/lib/":$PYTHONPATH
+# android platform tools on path
+  export PATH="/Users/zaknitsch/android/platform-tools:$PATH"
 
-  # Android SDK and Platform Tools
-  export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.0.1.jdk/Contents/Home"
-  export ANDROID_HOME="/Users/zaknitsch/Library/Android/sdk"
-  export PATH=${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:$JAVA_HOME/bin:$PATH
+# smlnj
+  export PATH="/usr/local/smlnj/bin/:$PATH"
   
-# custom FNs
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+  export PATH="$PATH:$HOME/.rvm/bin"
 
-  uuid='uuidgen | tr "[:upper:]" "[:lower:]"'
-  
-  function patch() {
-      git push origin HEAD:refs/for/master/$1
-  }
-
-  function patch-to() {
-      git push origin HEAD:refs/for/$1/$2
-  }
-
-  function runbot() {
-      robot --variable EMR\ TYPE:$1 \
-            --variable PROXY\ URL:  --variable SERVICES\ VERSION:$2 -t $3 ui
-  }
-
-  function sshwma() {
-      ssh -nNT -L 9999:10.27.122.193:3389 MacUser@172.25.150.2
-  }
-
-  function sshpsskin() {
-      ssh -nNT -L 9999:10.27.122.35:3389 MacUser@172.25.150.2
-  }
-
-  function hiveall(){
-      hcli dev stop && hcli dev wipe && hcli dev start
-  }
-
-  function repoup(){
-      repo upload -t \
-           --re=aeid@macadamian.com \
-           --re=bbartha@macadamian.com \
-           --re=cnadeau@macadamian.com \
-           --re=crusu@macadamian.com \
-           --re=dlifshitz@macadamian.com \
-           --re=mwalker@macadamian.com \
-           --re=pkamboj@macadamian.com \
-           --re=rdumitrescu@macadamian.com \
-           --re=pkamboj@macadamian.com \
-           --re=stephane@macadamian.com \
-           --re=xlarue@macadamian.com \
-
-  }
-
-  function dlc(){
-      docker ps | grep $1 | awk '{ print $1 }' | xargs docker logs --tail=1000 -t -f $2 $3
-  }
-
-  function drc(){
-      docker ps | grep $1 | awk '{ print $1 }' | xargs docker restart
-  }
-
-  function dsc(){
-      docker ps | grep $1 | awk '{ print $1 }' | xargs docker stop
-  }
-
-  function dkcleani() {
-      docker rmi -f $(docker images -q -a -f dangling=true)
-  }
-
-  function dkcleanc() {
-      docker rm $( docker ps -q -f status=exited )
-  }
-
-  function dkcleanv() {
-      docker volume rm $( docker volume ls -qf dangling=true )
-  }
-  
-  function dkrmi(){
-    docker images | grep "$1" | awk '{ print $3 }' | xargs docker rmi $2
-  }
+# Add GOPATH to PATH with $GOPATH/bin
+  export GOPATH=$(go env GOPATH)
+  export PATH=$PATH:$GOPATH/bin
