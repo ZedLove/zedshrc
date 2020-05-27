@@ -37,7 +37,7 @@
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+  COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -61,6 +61,10 @@
   source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+# maintain separate history per-pane
+unsetopt inc_append_history
+unsetopt share_history
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -117,7 +121,7 @@
       mkdir -p -- "$1" &&
           cd -P -- "$1"
   }
-  
+
 # custom find/replace for specific file/placeholders
   cvl() {
       from_file="zn_coverletter_2020.txt"
