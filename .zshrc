@@ -76,9 +76,6 @@ unsetopt share_history
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# git
-  alias gst="git status"
   
 # ssh
   export SSH_KEY_PATH="~/.ssh/rsa_id"
