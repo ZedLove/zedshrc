@@ -160,3 +160,9 @@ unsetopt share_history
 # Add GOPATH to PATH with $GOPATH/bin
   export GOPATH=$(go env GOPATH)
   export PATH=$PATH:$GOPATH/bin
+
+# HH NPM token
+  export NPM_TOKEN=
+
+# nodenv
+  eval "$(nodenv init -)"
