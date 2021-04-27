@@ -115,6 +115,11 @@ unsetopt share_history
           cd -P -- "$1"
   }
 
+# Open readme in Typora
+  readme() {
+      open -a "Typora" README.md
+  }
+
 # custom find/replace for specific file/placeholders
   cvl() {
       from_file="zn_coverletter_2020.txt"
