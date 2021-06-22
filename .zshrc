@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
   export PATH=$HOME/bin:/usr/local/bin:$PATH
-  export PATH=/usr/local/share/npm/bin:$PATH
+  # export PATH=/usr/local/share/npm/bin:$PATH
 
 # Path to your oh-my-zsh installation.
   export ZSH=/Users/zaknitsch/.oh-my-zsh
@@ -91,7 +91,7 @@ unsetopt share_history
 
 
 # Homebrew Token
-  export HOMEBREW_GITHUB_API_TOKEN=7a41ae4d5168879f5504a133dad9ae62db9e5989
+  export HOMEBREW_GITHUB_API_TOKEN=
   
 # GEOMETRY THEME COLOURS
   GEOMETRY_COLOR_EXIT_VALUE="magenta"         # prompt symbol color when exit value is != 0
