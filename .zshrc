@@ -76,7 +76,7 @@ unsetopt share_history
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-  
+
 # ssh
   export SSH_KEY_PATH="~/.ssh/rsa_id"
 
@@ -101,10 +101,10 @@ unsetopt share_history
 
 # GEOMETRY THEME SETTINGS
   PROMPT_GEOMETRY_EXEC_TIME="true"
-  
+
 # Hide Java icon from dock (seems ineffective)
-  export JAVA_TOOL_OPTIONS="-Dapple.awt.UIElement=true"  
-  
+  export JAVA_TOOL_OPTIONS="-Dapple.awt.UIElement=true"
+
 # AWS CREDS
   export EC2_REGION="eu-west-1"
   export AWS_CONFIG_FILE=~/.aws/credentials
@@ -113,11 +113,6 @@ unsetopt share_history
   mkcdir() {
       mkdir -p -- "$1" &&
           cd -P -- "$1"
-  }
-
-# Open readme in Typora
-  readme() {
-      open -a "Typora" README.md
   }
 
 # custom find/replace for specific file/placeholders
@@ -130,7 +125,7 @@ unsetopt share_history
       if [ -e $to_file ];
       then to_file="zn_coverletter_${2}_2.txt";
       fi
-      
+
       # specific addressee?
       if [ -z "$3" ];
       then
@@ -143,7 +138,7 @@ unsetopt share_history
       # display file contents for easy copy/paste
       cat $to_file
   }
-  
+
 # some path stuff
   export PATH="/usr/local/sbin:$PATH"
   export PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
@@ -153,7 +148,7 @@ unsetopt share_history
 
 # smlnj
   export PATH="/usr/local/smlnj/bin/:$PATH"
-  
+
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
   export PATH="$PATH:$HOME/.rvm/bin"
 
@@ -164,5 +159,9 @@ unsetopt share_history
 # HH NPM token
   export NPM_TOKEN=
 
-# nodenv
-  eval "$(nodenv init -)"
+# add homebrew curl to PATH
+  export PATH="/usr/local/opt/curl/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
